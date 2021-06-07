@@ -16,11 +16,3 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    - image: rfl25dev/ticket-client
-      context: client
-      docker:
-        dockerfile: Dockerfile
-      sync:
-        manual:
-          - src: '**/*.js'
-            dest: .
