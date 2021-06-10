@@ -3,8 +3,9 @@ import 'express-async-errors'
 import { json } from 'body-parser'
 import cookieSession from 'cookie-session'
 
+import { errorHandler, NotFoundError, currentUser } from '@rfltickets/common'
+import { newRouter  } from './routes/new'
 
-import { errorHandler, NotFoundError } from '@rfltickets/common'
 
 const app = express()
 app.set('trust proxy', true)
@@ -16,11 +17,17 @@ app.use(
     })
 )
 
+app.use(currentUser)
+
+app.use(newRouter)
+
+
 
 app.all('*', async () => {
     throw new NotFoundError()
 })
 
 app.use(errorHandler)
+
 
 export { app }
