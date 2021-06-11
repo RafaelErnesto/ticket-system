@@ -1,6 +1,6 @@
 import request from 'supertest'
-import { setOriginalNode } from 'typescript'
 import { app } from '../../app'
+import { Ticket } from '../../models/ticket'
 
 it('Ensure has a route handler listening to /api/tickets for post requests', async () => {
     const response = await request(app)
@@ -68,11 +68,18 @@ it('return error if price is invalid', async () => {
 
 
 it('Creates a ticket with valid inputs', async () => {
-    await request(app)
+
+   const response =  await request(app)
         .post('/api/tickets')
+        .set('Cookie', global.signin())
         .send({
             title: 'any_title',
             price: 1
         })
         .expect(201)
+        
+    let tickets = await Ticket.find({})
+
+    expect(tickets.length).toEqual(1)
+
 })
